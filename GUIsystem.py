@@ -1,10 +1,10 @@
-import tkinter as tk
-from tkinter import ttk, messagebox, simpledialog
 import pickle
-import os
+import tkinter as tk
+from tkinter import ttk, messagebox
 
 
-class Employee:
+class Employee: #defining classes for entities in system
+
     def __init__(self, name, employee_id, department, job_title, basic_salary, age, date_of_birth, passport_details):
         self.name = name
         self.employee_id = employee_id
@@ -47,7 +47,8 @@ class Event:
         self.suppliers = suppliers
 
 
-class EmployeeManagementApp:
+class EmployeeManagementApp: #creating the application class for handling staff, clients, suppliers, and events.
+    # Setting up the program with GUI elements.
     def __init__(self, master):
         self.master = master
         self.master.title("Employee Management System")
@@ -123,7 +124,7 @@ class EmployeeManagementApp:
         self.add_event_button.pack()
 
     def load_employees(self):
-        # Load employees from file or database
+        #loads employees from file
         employees = []
         try:
             with open('employees.pkl', 'rb') as f:
@@ -135,7 +136,7 @@ class EmployeeManagementApp:
             self.employee_table.insert('', 'end', values=(
             employee.name, employee.department, employee.job_title, employee.basic_salary))
 
-    def add_employee_dialog(self):
+    def add_employee_dialog(self): #method to display menu for adding new employee
         employee_info = self.get_employee_info()
         if employee_info:
             name, employee_id, department, job_title, basic_salary, age, date_of_birth, passport_details = employee_info
@@ -143,11 +144,11 @@ class EmployeeManagementApp:
                                 passport_details)
             self.employee_table.insert('', 'end', values=(name, employee_id, department, job_title, basic_salary))
 
-            # Save employee to file or database
+            #save employee to file
             with open('employees.pkl', 'ab') as f:
                 pickle.dump(employee, f)
 
-    def get_employee_info(self):
+    def get_employee_info(self): #method to get employee information from file
         dialog = tk.Toplevel(self.master)
         dialog.title("Add Employee")
 
@@ -179,13 +180,14 @@ class EmployeeManagementApp:
         dialog.wait_window()
 
     def confirm_employee(self, dialog, name, employee_id, department, job_title, salary):
+        #method to confirm and add employee information to the GUI table then save it
         if name and employee_id and department and job_title and salary:
             employee = Employee(name, employee_id, department, job_title, salary, "", "", "")
             self.employee_info = (name, employee_id, department, job_title, salary)
             self.employee_table.insert('', 'end', values=(
                 employee.name, employee.employee_id, employee.department, employee.job_title, employee.basic_salary))
 
-            # Save employee to file or database
+            #save employee to file
             with open('employees.pkl', 'ab') as f:
                 pickle.dump(employee, f)
 
@@ -194,7 +196,7 @@ class EmployeeManagementApp:
             messagebox.showerror("Error", "Please fill in all fields.")
 
     def load_clients(self):
-        # Load clients from file or database
+        #load clients from file
         clients = []
         try:
             with open('clients.pkl', 'rb') as f:
@@ -215,11 +217,11 @@ class EmployeeManagementApp:
             self.client_table.insert('', 'end', values=(
             client.client_id, client.name, client.address, client.contact_details, client.budget))
 
-            # Save client to file or database
+            #save client to file
             with open('clients.pkl', 'ab') as f:
                 pickle.dump(client, f)
 
-    def get_client_info(self):
+    def get_client_info(self): #mthod to get client information
         dialog = tk.Toplevel(self.master)
         dialog.title("Add Client")
 
@@ -260,7 +262,7 @@ class EmployeeManagementApp:
             messagebox.showerror("Error", "Please fill in all fields.")
 
     def load_suppliers(self):
-        # Load suppliers from file or database
+        #load suppliers from file or database
         suppliers = []
         try:
             with open('suppliers.pkl', 'rb') as f:
@@ -279,7 +281,7 @@ class EmployeeManagementApp:
             self.supplier_table.insert('', 'end', values=(
             supplier.supplier_id, supplier.name, supplier.address, supplier.contact_details))
 
-            # Save supplier to file or database
+            #save supplier to file or database
             with open('suppliers.pkl', 'ab') as f:
                 pickle.dump(supplier, f)
 
@@ -320,7 +322,7 @@ class EmployeeManagementApp:
             messagebox.showerror("Error", "Please fill in all fields.")
 
     def load_events(self):
-        # Load events from file or database
+        #load events from file or database
         events = []
         try:
             with open('events.pkl', 'rb') as f:
@@ -341,11 +343,11 @@ class EmployeeManagementApp:
             event.event_id, event.event_type, event.theme, event.date, event.time, event.duration, event.venue_address,
             event.client))
 
-            # Save event to file or database
+            #save event to file or database
             with open('events.pkl', 'ab') as f:
                 pickle.dump(event, f)
 
-    def get_event_info(self):
+    def get_event_info(self):  #method to get event information from the dialog
         dialog = tk.Toplevel(self.master)
         dialog.title("Add Event")
 
@@ -395,7 +397,7 @@ class EmployeeManagementApp:
         else:
             messagebox.showerror("Error", "Please fill in all fields.")
 
-
+#creating the main application window and running the GUI
 root = tk.Tk()
 app = EmployeeManagementApp(root)
 root.mainloop()
